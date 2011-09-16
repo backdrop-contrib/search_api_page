@@ -4,12 +4,12 @@
  * Displays a search page.
  *
  * @param $id
- *   The search page's ID.
+ *   The search page's machine name.
  * @param $keys
  *   The keys to search for.
  */
 function search_api_page_view($id, $keys = NULL) {
-  $page = search_api_page_load((int) $id);
+  $page = search_api_page_load($id);
   if (!$page) {
     return MENU_NOT_FOUND;
   }
@@ -58,7 +58,7 @@ function search_api_page_view($id, $keys = NULL) {
 /**
  * Executes a search.
  *
- * @param stdClass $page
+ * @param Entity $page
  *   The page for which a search should be executed.
  * @param $keys
  *   The keywords to search for.
@@ -66,7 +66,7 @@ function search_api_page_view($id, $keys = NULL) {
  * @return array
  *   The search results as returned by SearchApiQueryInterface::execute().
  */
-function search_api_page_search_execute(stdClass $page, $keys) {
+function search_api_page_search_execute(Entity $page, $keys) {
   $limit = $page->options['per_page'];
   $offset = pager_find_page() * $limit;
   $options = array(

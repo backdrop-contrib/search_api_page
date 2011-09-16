@@ -7,7 +7,7 @@ function search_api_page_admin_overview() {
   $base_path = drupal_get_path('module', 'search_api') . '/';
   drupal_add_css($base_path . 'search_api.admin.css');
 
-  $header = array(t('Status'), t('Name'), t('Path'), t('Index'), t('Operations'));
+  $header = array(t('Status'), t('Configuration'), t('Name'), t('Path'), t('Index'), t('Operations'));
 
   $rows = array();
   $t_enabled['data'] = array(
@@ -36,10 +36,11 @@ function search_api_page_admin_overview() {
   $delete = '/delete';
 
   foreach (search_api_page_load_multiple() as $page) {
-    $url = $pre . $page->id;
+    $url = $pre . $page->machine_name;
     $index = search_api_index_load($page->index_id);
     $rows[] = array(
       $page->enabled ? $t_enabled : $t_disabled,
+      theme('entity_status', array('status' => $page->status)),
       l($page->name, $page->path),
       l($page->path, $page->path),
       l($index->name, $pre_index . $index->machine_name),
@@ -83,6 +84,13 @@ function search_api_page_admin_add(array $form, array &$form_state) {
       '#title' => t('Search name'),
       '#maxlength' => 50,
       '#required' => TRUE,
+    );
+    $form['machine_name'] = array(
+      '#type' => 'machine_name',
+      '#maxlength' => 51,
+      '#machine_name' => array(
+        'exists' => 'search_api_index_load',
+      ),
     );
     $form['index_id'] = array(
       '#type' => 'select',
@@ -245,7 +253,7 @@ function search_api_page_admin_add_submit(array $form, array &$form_state) {
 /**
  * Displays a form for editing or deleting a search page.
  */
-function search_api_page_admin_edit(array $form, array &$form_state, stdClass $page) {
+function search_api_page_admin_edit(array $form, array &$form_state, Entity $page) {
   $index = search_api_index_load($page->index_id);
   $form_state['page'] = $page;
 
@@ -385,17 +393,34 @@ function search_api_page_admin_edit(array $form, array &$form_state, stdClass $p
     '#type' => 'submit',
     '#value' => t('Save changes'),
   );
-  $form['actions']['delete'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Delete search page'),
-    '#description' => t('This will delete the search page along with all of its settings.'),
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
-    'delete' => array(
-      '#type' => 'submit',
-      '#value' => t('Delete search page'),
-    ),
-  );
+
+  if ($page->hasStatus(ENTITY_OVERRIDDEN)) {
+    $form['actions']['revert'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Revert search page'),
+      '#description' => t('This will revert all settings on this search page back to the defaults. This action cannot be undone.'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      'revert' => array(
+        '#type' => 'submit',
+        '#value' => t('Revert search page'),
+      ),
+    );
+  }
+  elseif ($page->hasStatus(ENTITY_CUSTOM)) {
+    $form['actions']['delete'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Delete search page'),
+      '#description' => t('This will delete the search page along with all of its settings.'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      'delete' => array(
+        '#type' => 'submit',
+        '#value' => t('Delete search page'),
+      ),
+    );
+  }
+
 
   return $form;
 }
@@ -407,7 +432,7 @@ function search_api_page_admin_edit_validate(array $form, array &$form_state) {
   if ($form_state['values']['op'] == t('Save changes')) {
     $form_state['values']['path'] = drupal_strtolower(trim($form_state['values']['path']));
     $pages = search_api_page_load_multiple(FALSE, array('path' => $form_state['values']['path']));
-    if (count($pages) > 1 || (($page = array_shift($pages)) && $page->id != $form_state['page']->id)) {
+    if (count($pages) > 1 || (($page = array_shift($pages)) && $page->machine_name != $form_state['page']->machine_name)) {
       form_set_error('path', t('The entered path is already in use. Please enter a unique path.'));
     }
   }
@@ -421,11 +446,18 @@ function search_api_page_admin_edit_submit(array $form, array &$form_state) {
   form_state_values_clean($form_state);
   $form_state['redirect'] = 'admin/config/search/search_api/page';
 
-  if ($op == t('Delete search page')) {
-    search_api_page_delete($form_state['page']->id);
-    drupal_set_message(t('The search page was successfully deleted.'));
+  if ($op == t('Delete search page') || $op == t('Revert search page')) {
+    $form_state['page']->delete();
+
+    if ($op == t('Revert search page')) {
+      drupal_set_message(t('The search page was successfully reverted.'));
+    }
+    else {
+      drupal_set_message(t('The search page was successfully deleted.'));
+    }
+
     return;
   }
-  search_api_page_edit($form_state['page']->id, $form_state['values']);
+  search_api_page_edit($form_state['page']->machine_name, $form_state['values']);
   drupal_set_message(t('The changes were successfully saved.'));
 }
