@@ -148,10 +148,9 @@ function search_api_page_admin_add(array $form, array &$form_state) {
   );
 
   $fields = array();
-  if (!empty($index->options['fields'])) {
-    foreach ($index->getFulltextFields(TRUE) as $name) {
-      $fields[$name] = $index->options['fields'][$name]['name'];
-    }
+  $index_fields = $index->getFields();
+  foreach ($index->getFulltextFields() as $name) {
+    $fields[$name] = $index_fields[$name]['name'];
   }
   if (count($fields) > 1) {
     $form['fields'] = array(
