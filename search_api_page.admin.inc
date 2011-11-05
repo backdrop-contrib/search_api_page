@@ -178,6 +178,14 @@ function search_api_page_admin_add(array $form, array &$form_state) {
     '#default_value' => 10,
   );
 
+  $form['get_per_page'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Allow GET override'),
+    '#description' => t('Allow the „Results per page“ setting to be overridden from the URL, using the "per_page" GET parameter.<br />' .
+        'Example: http://example.com/search_results?per_page=7'),
+    '#default_value' => TRUE,
+  );
+
   $view_modes = array(
     'search_api_page_result' => t('Themed as search results'),
   );
@@ -350,6 +358,14 @@ function search_api_page_admin_edit(array $form, array &$form_state, Entity $pag
     '#description' => t('Select how many items will be displayed on one page of the search result.'),
     '#options' => drupal_map_assoc(array(5, 10, 20, 30, 40, 50, 60, 80, 100)),
     '#default_value' => $page->options['per_page'],
+  );
+
+  $form['options']['get_per_page'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Allow GET override'),
+    '#description' => t('Allow the „Results per page“ setting to be overridden from the URL, using the "per_page" GET parameter.<br />' .
+        'Example: <code>http://example.com/search_results?per_page=7</code>'),
+    '#default_value' => !empty($page->options['get_per_page']),
   );
 
   $view_modes = array(

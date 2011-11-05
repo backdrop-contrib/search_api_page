@@ -14,6 +14,14 @@ function search_api_page_view($id, $keys = NULL) {
     return MENU_NOT_FOUND;
   }
 
+  // Override per_page setting with GET parameter.
+  if (!empty($_GET['per_page']) && !empty($page->options['get_per_page']) && ((int) $_GET['per_page']) > 0) {
+    // Remember and later restore the true setting value so we don't
+    // accidentally permanently save the altered one.
+    $page->options['original_per_page'] = $page->options['per_page'];
+    $page->options['per_page'] = (int) $_GET['per_page'];
+  }
+
   $ret['form'] = drupal_get_form('search_api_page_search_form', $page, $keys);
 
   if ($keys) {
@@ -50,6 +58,11 @@ function search_api_page_view($id, $keys = NULL) {
         drupal_set_message($warning, 'warning');
       }
     }
+  }
+
+  if (isset($page->options['original_per_page'])) {
+    $page->options['per_page'] = $page->options['original_per_page'];
+    unset($page->options['original_per_page']);
   }
 
   return $ret;
