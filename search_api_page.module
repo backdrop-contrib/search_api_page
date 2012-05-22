@@ -323,7 +323,7 @@ function search_api_page_load_multiple($ids = FALSE, array $conditions = array()
 function search_api_page_insert(array $values) {
   foreach (array('name', 'machine_name', 'index_id', 'path') as $var) {
     if (!isset($values[$var])) {
-      throw new SearchApiException(t('Property !field has to be set for the new search page.', array('!field' => $var)));
+      throw new SearchApiException(t('Property @field has to be set for the new search page.', array('@field' => $var)));
     }
   }
   if (empty($values['description'])) {
