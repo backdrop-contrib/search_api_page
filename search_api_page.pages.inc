@@ -25,7 +25,13 @@ function search_api_page_view($id, $keys = NULL) {
   $ret['form'] = drupal_get_form('search_api_page_search_form', $page, $keys);
 
   if ($keys) {
-    $results = search_api_page_search_execute($page, $keys);
+    try {
+      $results = search_api_page_search_execute($page, $keys);
+    }
+    catch (SearchApiException $e) {
+      $ret['message'] = t('An error occurred while executing the search. Please try again or contact the site administrator if the problem persists.');
+      watchdog('search_api_page', 'An error occurred while executing a search: !msg.', array('!msg' => $e->getMessage()), WATCHDOG_ERROR, l(t('search page'), $_GET['q']));
+    }
 
     // If spellcheck results are returned then add them to the render array.
     if (isset($results['search_api_spellcheck'])) {
