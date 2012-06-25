@@ -199,7 +199,7 @@ function theme_search_api_page_result(array $variables) {
     $fields = search_api_extract_fields($wrapper, $fields);
     $text = '';
     $length = 0;
-    foreach ($fields as $field) {
+    foreach ($fields as $field_name => $field) {
       if (search_api_is_list_type($field['type']) || !isset($field['value'])) {
         continue;
       }
@@ -207,10 +207,29 @@ function theme_search_api_page_result(array $variables) {
       if ($val_length > $length) {
         $text = $field['value'];
         $length = $val_length;
+
+        $format = NULL;
+        if (($pos = strrpos($field_name, ':')) && substr($field_name, $pos + 1) == 'value') {
+          $tmp = $wrapper;
+          try {
+            foreach (explode(':', substr($field_name, 0, $pos)) as $part) {
+              if (!isset($tmp->$part)) {
+                $tmp = NULL;
+              }
+              $tmp = $tmp->$part;
+            }
+          }
+          catch (EntityMetadataWrapperException $e) {
+            $tmp = NULL;
+          }
+          if ($tmp && $tmp->type() == 'text_formatted' && isset($tmp->format)) {
+            $format = $tmp->format->value();
+          }
+        }
       }
     }
     if ($text && function_exists('text_summary')) {
-      $text = text_summary($text);
+      $text = text_summary($text, $format);
     }
   }
 
