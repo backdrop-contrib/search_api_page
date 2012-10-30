@@ -189,6 +189,13 @@ function search_api_page_admin_add(array $form, array &$form_state) {
     '#default_value' => TRUE,
   );
 
+  $form['result_page_search_form'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show search form on result page'),
+    '#description' => t('Enable or disable the search form on the result page'),
+    '#default_value' => TRUE,
+  );
+
   $view_modes = array(
     'search_api_page_result' => t('Themed as search results'),
   );
@@ -361,6 +368,13 @@ function search_api_page_admin_edit(array $form, array &$form_state, Entity $pag
     '#description' => t('Select how many items will be displayed on one page of the search result.'),
     '#options' => drupal_map_assoc(array(5, 10, 20, 30, 40, 50, 60, 80, 100)),
     '#default_value' => $page->options['per_page'],
+  );
+
+  $form['result_page_search_form'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show search form on result page'),
+    '#description' => t('Enable or disable the search form on the result page'),
+    '#default_value' => isset($page->options['result_page_search_form']) ? $page->options['result_page_search_form'] : TRUE,
   );
 
   $form['options']['get_per_page'] = array(

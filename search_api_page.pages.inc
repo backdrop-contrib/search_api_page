@@ -1,8 +1,8 @@
 <?php
-+/**
-+ * @file
-+ * User page callbacks for the Search pages module.
-+ */
+/**
+ * @file
+ * User page callbacks for the Search pages module.
+ */
 
 /**
  * Displays a search page.
@@ -26,7 +26,9 @@ function search_api_page_view($id, $keys = NULL) {
     $page->options['per_page'] = (int) $_GET['per_page'];
   }
 
-  $ret['form'] = drupal_get_form('search_api_page_search_form', $page, $keys);
+  if (!isset($page->options['result_page_search_form']) || $page->options['result_page_search_form']) {
+    $ret['form'] = drupal_get_form('search_api_page_search_form', $page, $keys);
+  }
 
   if ($keys) {
     try {
