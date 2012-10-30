@@ -211,7 +211,7 @@ function search_api_page_admin_add(array $form, array &$form_state) {
   else {
     $form['view_mode'] = array(
       '#type' => 'value',
-      '#value' => reset($view_modes),
+      '#value' => key($view_modes),
     );
   }
 
@@ -393,7 +393,7 @@ function search_api_page_admin_edit(array $form, array &$form_state, Entity $pag
   else {
     $form['options']['view_mode'] = array(
       '#type' => 'value',
-      '#value' => reset($view_modes),
+      '#value' => key($view_modes),
     );
   }
 
