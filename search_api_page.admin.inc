@@ -370,7 +370,7 @@ function search_api_page_admin_edit(array $form, array &$form_state, Entity $pag
     '#default_value' => $page->options['per_page'],
   );
 
-  $form['result_page_search_form'] = array(
+  $form['options']['result_page_search_form'] = array(
     '#type' => 'checkbox',
     '#title' => t('Show search form on result page'),
     '#description' => t('Enable or disable the search form on the result page'),
