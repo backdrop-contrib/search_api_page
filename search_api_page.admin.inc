@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Admin page callbacks for the Search pages module.
+ */
 
 /**
  * Displays an overview of all defined search pages.
@@ -434,7 +438,6 @@ function search_api_page_admin_edit(array $form, array &$form_state, Entity $pag
       ),
     );
   }
-
 
   return $form;
 }

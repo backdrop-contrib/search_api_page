@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file
+ * Install, update and uninstall functions for the Search pages module.
+ */
 
 /**
  * Implements hook_schema().

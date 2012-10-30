@@ -1,4 +1,8 @@
 <?php
++/**
++ * @file
++ * User page callbacks for the Search pages module.
++ */
 
 /**
  * Displays a search page.
@@ -61,7 +65,7 @@ function search_api_page_view($id, $keys = NULL) {
     }
     if (!empty($results['warnings'])) {
       foreach ($results['warnings'] as $warning) {
-        drupal_set_message($warning, 'warning');
+        drupal_set_message(check_plain($warning), 'warning');
       }
     }
   }
