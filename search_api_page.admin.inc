@@ -460,7 +460,7 @@ function search_api_page_admin_edit(array $form, array &$form_state, Entity $pag
  * Validation callback for search_api_page_admin_edit().
  */
 function search_api_page_admin_edit_validate(array $form, array &$form_state) {
-  if ($form_state['values']['op'] == t('Save changes')) {
+  if (!empty($form_state['values']['op']) && $form_state['values']['op'] == t('Save changes')) {
     $form_state['values']['path'] = drupal_strtolower(trim($form_state['values']['path']));
     $pages = search_api_page_load_multiple(FALSE, array('path' => $form_state['values']['path']));
     if (count($pages) > 1 || (($page = array_shift($pages)) && $page->machine_name != $form_state['page']->machine_name)) {
