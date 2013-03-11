@@ -469,4 +469,9 @@ function search_api_page_search_form_submit(array $form, array &$form_state) {
   $keys = trim($form_state['values']['keys_' . $form_state['values']['id']]);
   // @todo Take care of "/"s in the keys
   $form_state['redirect'] = $form_state['values']['base_' . $form_state['values']['id']] . '/' . $keys;
+
+  // To completely controll the redirect destination, we need to remove the
+  // 'destination' GET parameter, which would override our destination, if
+  // present.
+  unset($_GET['destination']);
 }
