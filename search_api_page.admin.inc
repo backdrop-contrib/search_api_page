@@ -222,6 +222,23 @@ function search_api_page_admin_add(array $form, array &$form_state) {
     );
   }
 
+  $languages = array(
+    'current' => t("Current user's language"),
+    'default' => t('Default site language'),
+  );
+  $languages += entity_metadata_language_list();
+  if (count($languages) > 4) {
+    $form['language_filter'] = array(
+      '#type' => 'select',
+      '#title' => t('Language filter'),
+      '#description' => t('Filter the results by language. Select none to show results independent of language.'),
+      '#options' => $languages,
+      '#multiple' => TRUE,
+      '#size' => min(4, count($languages)),
+      '#default_value' => array(),
+    );
+  }
+
   if (module_exists('search_api_spellcheck') && ($server = $index->server()) && $server->supportsFeature('search_api_spellcheck')) {
     $form['search_api_spellcheck'] = array(
       '#type' => 'checkbox',
@@ -408,6 +425,23 @@ function search_api_page_admin_edit(array $form, array &$form_state, Entity $pag
     $form['options']['view_mode'] = array(
       '#type' => 'value',
       '#value' => key($view_modes),
+    );
+  }
+
+  $languages = array(
+    'current' => t("Current user's language"),
+    'default' => t('Default site language'),
+  );
+  $languages += entity_metadata_language_list();
+  if (count($languages) > 4) {
+    $form['options']['language_filter'] = array(
+      '#type' => 'select',
+      '#title' => t('Language filter'),
+      '#description' => t('Filter the results by language. Select none to show results independent of language.'),
+      '#options' => $languages,
+      '#multiple' => TRUE,
+      '#size' => min(4, count($languages)),
+      '#default_value' => isset($page->options['language_filter']) ? $page->options['language_filter'] : array(),
     );
   }
 

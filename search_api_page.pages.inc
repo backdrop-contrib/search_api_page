@@ -109,7 +109,41 @@ function search_api_page_search_execute(Entity $page, $keys) {
   if (!empty($page->options['fields'])) {
     $query->fields($page->options['fields']);
   }
+  if (!empty($page->options['language_filter'])) {
+    $languages = array_unique(array_map('_search_api_page_map_languages', $page->options['language_filter']));
+    if (count($languages) == 1) {
+      $query->condition('search_api_language', reset($languages));
+    }
+    else {
+      $filter = $query->createFilter('OR');
+      foreach ($languages as $lang) {
+        $filter->condition('search_api_language', $lang);
+      }
+      $query->filter($filter);
+    }
+  }
   return $query->execute();
+}
+
+/**
+ * Maps some special languages to their correct value.
+ *
+ * Callback for array_map() in search_api_page_search_execute().
+ *
+ * @param string $lang
+ *   "current", "default" or a valid ISO 639 language code.
+ *
+ * @return string
+ *   The ISO 639 language code of the language represented by $lang.
+ */
+function _search_api_page_map_languages($lang) {
+    if ($lang == 'current') {
+      return $GLOBALS['language_content']->language;
+    }
+    elseif ($lang == 'default') {
+      return language_default('language');
+    }
+    return $lang;
 }
 
 /**
