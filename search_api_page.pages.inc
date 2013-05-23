@@ -26,6 +26,11 @@ function search_api_page_view($id, $keys = NULL) {
     $page->options['per_page'] = (int) $_GET['per_page'];
   }
 
+  // Pre-process keys (unescape \ and /).
+  $keys = explode("\\\\", $keys);
+  $keys = str_replace("\\", "/", $keys);
+  $keys = implode("\\", $keys);
+
   if (!isset($page->options['result_page_search_form']) || $page->options['result_page_search_form']) {
     $ret['form'] = drupal_get_form('search_api_page_search_form', $page, $keys);
   }
