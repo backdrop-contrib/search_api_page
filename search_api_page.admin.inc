@@ -91,9 +91,9 @@ function search_api_page_admin_add(array $form, array &$form_state) {
     );
     $form['machine_name'] = array(
       '#type' => 'machine_name',
-      '#maxlength' => 51,
+      '#maxlength' => 32,
       '#machine_name' => array(
-        'exists' => 'search_api_index_load',
+        'exists' => 'search_api_page_load',
       ),
     );
     $form['index_id'] = array(
