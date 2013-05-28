@@ -28,19 +28,11 @@ function search_api_page_admin_overview() {
     '#title' => t('disabled'),
   );
   $t_disabled['class'] = array('search-api-status');
-  $t_enable = t('enable');
-  $t_disable = t('disable');
   $t_edit = t('edit');
-  $t_delete = t('delete');
   $pre = 'admin/config/search/search_api/page/';
   $pre_index = 'admin/config/search/search_api/index/';
-  $enable = '/enable';
-  $disable = '/disable';
-  $edit = '/edit';
-  $delete = '/delete';
 
   foreach (search_api_page_load_multiple() as $page) {
-    $url = $pre . $page->machine_name;
     $index = search_api_index_load($page->index_id);
     $rows[] = array(
       $page->enabled ? $t_enabled : $t_disabled,
@@ -48,7 +40,7 @@ function search_api_page_admin_overview() {
       l($page->name, $page->path),
       l($page->path, $page->path),
       l($index->name, $pre_index . $index->machine_name),
-      l($t_edit, $url . $edit),
+      l($t_edit, $pre . $page->machine_name),
     );
   }
 
@@ -186,7 +178,7 @@ function search_api_page_admin_add(array $form, array &$form_state) {
     '#title' => t('Allow GET override'),
     '#description' => t('Allow the „Results per page“ setting to be overridden from the URL, using the "per_page" GET parameter.<br />' .
         'Example: http://example.com/search_results?per_page=7'),
-    '#default_value' => TRUE,
+    '#default_value' => FALSE,
   );
 
   $form['result_page_search_form'] = array(

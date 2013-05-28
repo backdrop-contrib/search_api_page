@@ -18,14 +18,6 @@ function search_api_page_view($id, $keys = NULL) {
     return MENU_NOT_FOUND;
   }
 
-  // Override per_page setting with GET parameter.
-  if (!empty($_GET['per_page']) && !empty($page->options['get_per_page']) && ((int) $_GET['per_page']) > 0) {
-    // Remember and later restore the true setting value so we don't
-    // accidentally permanently save the altered one.
-    $page->options['original_per_page'] = $page->options['per_page'];
-    $page->options['per_page'] = (int) $_GET['per_page'];
-  }
-
   // Pre-process keys (unescape \ and /).
   $keys = explode("\\\\", $keys);
   $keys = str_replace("\\", "/", $keys);
@@ -36,12 +28,24 @@ function search_api_page_view($id, $keys = NULL) {
   }
 
   if ($keys) {
+    // Override per_page setting with GET parameter.
+    $limit = $page->options['per_page'];
+    if (!empty($page->options['get_per_page'])
+        && !empty($_GET['per_page'])
+        && ((int) $_GET['per_page']) > 0) {
+      $limit = (int) $_GET['per_page'];
+    }
+
     try {
-      $results = search_api_page_search_execute($page, $keys);
+      $results = search_api_page_search_execute($page, $keys, $limit);
     }
     catch (SearchApiException $e) {
-      $ret['message'] = t('An error occurred while executing the search. Please try again or contact the site administrator if the problem persists.');
-      watchdog('search_api_page', 'An error occurred while executing a search: !msg.', array('!msg' => $e->getMessage()), WATCHDOG_ERROR, l(t('search page'), $_GET['q']));
+      drupal_set_message(t('An error occurred while executing the search. Please try again, or contact the site administrator if the problem persists.'), 'error');
+      $link = l(t('search page'), $_GET['q'], array('query' => drupal_get_query_parameters()));
+      watchdog_exception('search_api_page', $e,
+          '%type while executing a search: !message in %function (line %line of %file).',
+          array(), WATCHDOG_ERROR, $link);
+      return $ret;
     }
 
     // If spellcheck results are returned then add them to the render array.
@@ -61,10 +65,9 @@ function search_api_page_view($id, $keys = NULL) {
     $ret['results']['#view_mode'] = isset($page->options['view_mode']) ? $page->options['view_mode'] : 'search_api_page_result';
     $ret['results']['#keys'] = $keys;
 
-    if ($results['result count'] > $page->options['per_page']) {
-      pager_default_initialize($results['result count'], $page->options['per_page']);
+    if ($results['result count'] > $limit) {
+      pager_default_initialize($results['result count'], $limit);
       $ret['pager']['#theme'] = 'pager';
-      $ret['pager']['#quantity'] = 9;
     }
 
     if (!empty($results['ignored'])) {
@@ -77,11 +80,6 @@ function search_api_page_view($id, $keys = NULL) {
     }
   }
 
-  if (isset($page->options['original_per_page'])) {
-    $page->options['per_page'] = $page->options['original_per_page'];
-    unset($page->options['original_per_page']);
-  }
-
   return $ret;
 }
 
@@ -90,14 +88,15 @@ function search_api_page_view($id, $keys = NULL) {
  *
  * @param Entity $page
  *   The page for which a search should be executed.
- * @param $keys
+ * @param string $keys
  *   The keywords to search for.
+ * @param int $limit
+ *   The maximum number of results to return.
  *
  * @return array
  *   The search results as returned by SearchApiQueryInterface::execute().
  */
-function search_api_page_search_execute(Entity $page, $keys) {
-  $limit = $page->options['per_page'];
+function search_api_page_search_execute(Entity $page, $keys, $limit = 10) {
   $offset = pager_find_page() * $limit;
   $options = array(
     'search id' => 'search_api_page:' . $page->path,
