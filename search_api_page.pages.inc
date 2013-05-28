@@ -23,6 +23,11 @@ function search_api_page_view($id, $keys = NULL) {
   $keys = str_replace("\\", "/", $keys);
   $keys = implode("\\", $keys);
 
+  $ret['#contextual_links']['search_api_page'] = array(
+    'admin/config/search/search_api/page',
+    array($page->machine_name),
+  );
+
   if (!isset($page->options['result_page_search_form']) || $page->options['result_page_search_form']) {
     $ret['form'] = drupal_get_form('search_api_page_search_form', $page, $keys);
   }

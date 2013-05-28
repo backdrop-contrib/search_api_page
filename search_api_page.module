@@ -34,6 +34,11 @@ function search_api_page_menu() {
     'access arguments' => array('administer search_api'),
     'file' => 'search_api_page.admin.inc',
   );
+  $items[$pre . '/%search_api_page/edit'] = array(
+    'title' => 'Edit search page',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'context' => MENU_CONTEXT_INLINE,
+  );
 
   // During uninstallation, this would lead to a fatal error otherwise.
   if (module_exists('search_api_page')) {
@@ -115,6 +120,10 @@ function search_api_page_block_view($delta) {
     $block = array();
     $block['subject'] = t($page->name);
     $block['content'] = drupal_get_form('search_api_page_search_form_' . $page->machine_name, $page, NULL, TRUE);
+    $block['content']['#contextual_links']['search_api_page'] = array(
+      'admin/config/search/search_api/page',
+      array($page->machine_name),
+    );
     return $block;
   }
 }
