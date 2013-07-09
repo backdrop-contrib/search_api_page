@@ -68,21 +68,39 @@ function search_api_page_theme() {
       'results' => array('result count' => 0),
       'items' => array(),
       'view_mode' => 'search_api_page_result',
-      'keys' => '',
+      'keys' => NULL,
+      'page' => NULL,
+      'spellcheck' => NULL,
+      'pager' => NULL,
     ),
     'file' => 'search_api_page.pages.inc',
+    'template' => 'search-api-page-results',
   );
   $themes['search_api_page_result'] = array(
     'variables' => array(
       'index' => NULL,
       'result' => NULL,
       'item' => NULL,
-      'keys' => '',
+      'keys' => NULL,
+      'list_classes' => '',
     ),
     'file' => 'search_api_page.pages.inc',
+    'template' => 'search-api-page-result',
+  );
+  $themes['search_api_page_search_performance'] = array(
+    'render element' => 'element',
   );
 
   return $themes;
+}
+
+/**
+ * Implements theme for rendering search-performance
+ */
+function theme_search_api_page_search_performance($variables) {
+  $element = array_shift($variables);
+
+  return $element['#markup'];
 }
 
 /**

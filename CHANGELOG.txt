@@ -1,5 +1,7 @@
 Search API Pages 1.x, dev (xx/xx/xxxx):
 ---------------------------------------
+- #1313676 by tomogden, drunken monkey, aaronbauman, guillaumev: Added
+  templates.
 - #2012712 by drunken monkey: Fixed $reset parameter for load functions.
 - #1999102 by drunken monkey: Added contextual links to blocks and pages.
 - #1999106 by drunken monkey: Minor code cleanup.
