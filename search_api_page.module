@@ -72,6 +72,7 @@ function search_api_page_theme() {
       'page' => NULL,
       'spellcheck' => NULL,
       'pager' => NULL,
+      'no_results_help'
     ),
     'file' => 'search_api_page.pages.inc',
     'template' => 'search-api-page-results',
