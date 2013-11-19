@@ -1,5 +1,7 @@
 Search API Pages 1.x, dev (xx/xx/xxxx):
 ---------------------------------------
+- #2134731 by drunken monkey: Fixed notices when trying to display the block of
+  a disabled search page.
 
 Search API Pages 1.0 (09/01/2013):
 ----------------------------------
