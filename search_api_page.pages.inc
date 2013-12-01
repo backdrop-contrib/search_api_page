@@ -106,6 +106,9 @@ function search_api_page_view($id, $keys = NULL) {
  *
  * @return array
  *   The search results as returned by SearchApiQueryInterface::execute().
+ *
+ * @throws SearchApiException
+ *   If an error occurred during the search.
  */
 function search_api_page_search_execute(Entity $page, $keys, $limit = 10) {
   $offset = pager_find_page() * $limit;
