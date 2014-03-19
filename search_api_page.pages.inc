@@ -114,6 +114,7 @@ function search_api_page_search_execute(Entity $page, $keys, $limit = 10) {
   $offset = pager_find_page() * $limit;
   $options = array(
     'search id' => 'search_api_page:' . $page->path,
+    'search_api_page id' => $page->machine_name,
     'parse mode' => $page->options['mode'],
   );
 
