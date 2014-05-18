@@ -477,6 +477,9 @@ function search_api_page_search_form(array $form, array &$form_state, Entity $pa
     '#default_value' => $keys,
     '#size' => $compact ? 15 : 30,
   );
+  if ($compact) {
+    $form['keys_' . $page->id]['#attributes']['placeholder'] = t('Enter your keywords');
+  }
   $form['base_' . $page->id] = array(
     '#type' => 'value',
     '#value' => $page->path,
