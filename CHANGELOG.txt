@@ -1,3 +1,6 @@
+Search API Pages 1.x, dev (xx/xx/xxxx):
+---------------------------------------
+
 Search API Pages 1.1 (05/24/2014):
 ----------------------------------
 - #2259109 by DamienMcKenna, drunken monkey: Added a "placeholder" attribute
