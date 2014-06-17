@@ -1,5 +1,8 @@
 Search API Pages 1.x, dev (xx/xx/xxxx):
 ---------------------------------------
+- #1368152 by rooby, mparker17, acrazyanimal, jagermonster, ohthehugemanatee,
+  drunken monkey, milesw, Roderik de Langen: Added an option to allow search
+  pages to support facet-only searching.
 
 Search API Pages 1.1 (05/24/2014):
 ----------------------------------
