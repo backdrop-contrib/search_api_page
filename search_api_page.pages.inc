@@ -227,19 +227,24 @@ function _search_api_page_map_languages($lang) {
 function template_preprocess_search_api_page_results(array &$variables) {
   $results = $variables['results'];
 
-  $variables['items'] = $variables['index']->loadItems(array_keys($variables['results']['results']));
+  if (!empty($variables['results']['results'])) {
+    $variables['items'] = $variables['index']->loadItems(array_keys($variables['results']['results']));
+  }
   $variables['result_count'] = $results['result count'];
-  $variables['sec'] = round($results['performance']['complete'], 3);
+  $variables['sec'] = 0;
+  if (isset($results['performance']['complete'])) {
+    $variables['sec'] = round($results['performance']['complete'], 3);
+  }
   $variables['search_performance'] = array(
-      '#theme' => 'search_api_page_search_performance',
-      '#markup' => format_plural(
-        $results['result count'],
-        'The search found 1 result in @sec seconds.',
-        'The search found @count results in @sec seconds.',
-        array('@sec' => $variables['sec'])
-      ),
-      '#prefix' => '<p class="search-performance">',
-      '#suffix' => '</p>',
+    '#theme' => 'search_api_page_search_performance',
+    '#markup' => format_plural(
+      $results['result count'],
+      'The search found 1 result in @sec seconds.',
+      'The search found @count results in @sec seconds.',
+      array('@sec' => $variables['sec'])
+    ),
+    '#prefix' => '<p class="search-performance">',
+    '#suffix' => '</p>',
   );
 
   // Make the help text depend on the parse mode used.

@@ -1,5 +1,7 @@
 Search API Pages 1.x, dev (xx/xx/xxxx):
 ---------------------------------------
+- #2244981 by drunken monkey: Fixed theming code to not try to load results if
+  there are none.
 - #1368152 by rooby, mparker17, acrazyanimal, jagermonster, ohthehugemanatee,
   drunken monkey, milesw, Roderik de Langen: Added an option to allow search
   pages to support facet-only searching.
