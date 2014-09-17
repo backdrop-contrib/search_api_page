@@ -295,12 +295,14 @@ function template_preprocess_search_api_page_results(array &$variables) {
   else {
     $variables['search_results'] = array();
     foreach ($results['results'] as $item) {
-      $variables['search_results'][] = array(
-        '#theme' => 'search_api_page_result',
-        '#index' => $variables['index'],
-        '#result' => $item,
-        '#item' => $variables['items'][$item['id']],
-      );
+      if(!empty($variables['items'][$item['id']])) {
+        $variables['search_results'][] = array(
+          '#theme' => 'search_api_page_result',
+          '#index' => $variables['index'],
+          '#result' => $item,
+          '#item' => $variables['items'][$item['id']],
+        );
+      }
     }
   }
   // Load CSS.
