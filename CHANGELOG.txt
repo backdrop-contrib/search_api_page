@@ -1,5 +1,6 @@
 Search API Pages 1.x, dev (xx/xx/xxxx):
 ---------------------------------------
+- #2345601 by sjancich: Fixed search block caching.
 - #2334647 by jseffel: Fixed rendering of unknown items.
 - #2244981 by drunken monkey: Fixed theming code to not try to load results if
   there are none.

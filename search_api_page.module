@@ -141,7 +141,7 @@ function search_api_page_block_info() {
   foreach (search_api_page_load_multiple(FALSE, array('enabled' => TRUE)) as $page) {
     $blocks[$page->machine_name] = array(
       'info' => t('Search block: !name', array('!name' => $page->name)),
-      'cache' => DRUPAL_CACHE_PER_USER,
+      'cache' => DRUPAL_CACHE_PER_PAGE,
     );
   }
   return $blocks;
