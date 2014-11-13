@@ -141,7 +141,7 @@ function search_api_page_block_info() {
   foreach (search_api_page_load_multiple(FALSE, array('enabled' => TRUE)) as $page) {
     $blocks[$page->machine_name] = array(
       'info' => t('Search block: !name', array('!name' => $page->name)),
-      'cache' => DRUPAL_CACHE_PER_PAGE,
+      'cache' => DRUPAL_CACHE_PER_ROLE | DRUPAL_CACHE_PER_PAGE,
     );
   }
   return $blocks;
@@ -152,7 +152,7 @@ function search_api_page_block_info() {
  */
 function search_api_page_block_view($delta) {
   $page = search_api_page_load($delta);
-  if ($page && $page->enabled) {
+  if ($page && $page->enabled && search_api_page_access($delta)) {
     $block = array();
     $block['subject'] = t($page->name);
     $block['content'] = drupal_get_form('search_api_page_search_form_' . $page->machine_name, $page, NULL, TRUE);
