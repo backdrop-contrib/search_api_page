@@ -289,11 +289,14 @@ function template_preprocess_search_api_page_results(array &$variables) {
 
   // Distinguish between the native search_api_page_result "view mode" and
   // proper entity view modes (e.g., Teaser, Full content, RSS and so forth).
+  $variables['search_results'] = array();
   if ($variables['view_mode'] != 'search_api_page_result') {
-    $variables['search_results'] = entity_view($variables['index']->getEntityType(), $variables['items'], $variables['view_mode']);
+    // Check if we have any entities to show and, if yes, show them.
+    if (!empty($variables['items'])) {
+      $variables['search_results'] = entity_view($variables['index']->getEntityType(), $variables['items'], $variables['view_mode']);
+    }
   }
   else {
-    $variables['search_results'] = array();
     foreach ($results['results'] as $item) {
       if(!empty($variables['items'][$item['id']])) {
         $variables['search_results'][] = array(
