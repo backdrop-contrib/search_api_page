@@ -1,5 +1,7 @@
 Search API Pages 1.x, dev (xx/xx/xxxx):
 ---------------------------------------
+- #2425179 by DamienMcKenna, drunken monkey: Added a CTools plugin for the
+  search box.
 - #2392289 by AndrewsizZ: Fixed error when there are no results to display.
 - #2358735 by drunken monkey: Added access check when viewing the search block.
 - #2345601 by sjancich: Fixed search block caching.
