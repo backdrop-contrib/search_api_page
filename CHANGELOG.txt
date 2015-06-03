@@ -1,5 +1,5 @@
-Search API Pages 1.x, dev (xx/xx/xxxx):
----------------------------------------
+Search API Pages 1.2 (2015-06-03):
+----------------------------------
 - #2425179 by DamienMcKenna, drunken monkey: Added a CTools plugin for the
   search box.
 - #2392289 by AndrewsizZ: Fixed error when there are no results to display.
