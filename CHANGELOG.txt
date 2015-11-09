@@ -1,4 +1,4 @@
-Search API Pages 1.x, dev (xx/xx/xxxx):
+Search API Pages 1.x, dev (xxxx-xx-xx):
 ---------------------------------------
 - #2498525 by drunken monkey, GDrupal: Fixed warnings for empty results.
 - #2528592 by marcingy: Fixed old search page titles being displayed until
