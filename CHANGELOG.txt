@@ -1,5 +1,7 @@
 Search API Pages 1.x, dev (xxxx-xx-xx):
 ---------------------------------------
+- #2592143 by drunken monkey: Improved template documentation to state title is
+  unsanitized.
 - #2498525 by drunken monkey, GDrupal: Fixed warnings for empty results.
 - #2528592 by marcingy: Fixed old search page titles being displayed until
   manual menu rebuild.
