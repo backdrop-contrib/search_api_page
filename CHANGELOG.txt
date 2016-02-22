@@ -1,5 +1,6 @@
 Search API Pages 1.x, dev (xxxx-xx-xx):
 ---------------------------------------
+- #1377292 by drunken monkey: Fixed search form block for anonymous users.
 - #2592143 by drunken monkey: Improved template documentation to state title is
   unsanitized.
 - #2498525 by drunken monkey, GDrupal: Fixed warnings for empty results.
