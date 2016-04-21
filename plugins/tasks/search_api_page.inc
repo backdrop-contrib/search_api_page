@@ -103,6 +103,8 @@ function search_api_page_search_api_page_page($type) {
     return $output;
   }
 
+  // Otherwise, fall back.
+
   $function = 'search_api_page_view';
   foreach (module_implements('page_manager_override') as $module) {
     $call = $module . '_page_manager_override';
@@ -112,14 +114,10 @@ function search_api_page_search_api_page_page($type) {
     }
   }
 
-  // Otherwise, fall back.
-
-  // Put the $type back on the arguments.
   // Load the search page results with the given keywords.
   module_load_include('inc', 'search_api_page', 'search_api_page.pages');
-  array_unshift($args, $type);
-
-  return $function($args);
+  $args = array($type, $keys);
+  return call_user_func_array($function, $args);
 }
 
 /**
