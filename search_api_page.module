@@ -535,8 +535,13 @@ function search_api_page_search_form(array $form, array &$form_state, Entity $pa
     }
   }
 
-  // Search forms generally don't need token validation.
-  $form['#token'] = FALSE;
+  // Search forms generally don't need token validation for logged users.
+  // (Forms for anonymous users never get form tokens added, but if we set
+  // #token to FALSE here we'd run into a Form API bug that still tries to
+  // validate the (non-existent) token.)
+  if (user_is_logged_in()) {
+    $form['#token'] = FALSE;
+  }
 
   return $form;
 }
