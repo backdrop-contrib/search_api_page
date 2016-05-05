@@ -71,6 +71,13 @@ function search_api_page_access($page_machine_name) {
  * Implements hook_theme().
  */
 function search_api_page_theme() {
+  $themes['search_api_page_full_page'] = array(
+    'variables' => array(
+      'form' => array(),
+      'results' => array(),
+    ),
+    'template' => 'search-api-page-full-page',
+  );
   $themes['search_api_page_results'] = array(
     'variables' => array(
       'index' => NULL,

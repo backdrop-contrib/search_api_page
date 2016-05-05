@@ -37,13 +37,16 @@ function search_api_page_view($id, $keys = NULL, $overridden_options = array()) 
     $keys = NULL;
   }
 
+  $ret = array(
+    '#theme' => 'search_api_page_full_page',
+  );
   $ret['#contextual_links']['search_api_page'] = array(
     'admin/config/search/search_api/page',
     array($page->machine_name),
   );
 
   if (!isset($page->options['result_page_search_form']) || $page->options['result_page_search_form']) {
-    $ret['form'] = drupal_get_form('search_api_page_search_form', $page, $keys);
+    $ret['#form'] = drupal_get_form('search_api_page_search_form', $page, $keys);
   }
 
   // Do a search if we have keys, or our empty behavior and facets dictate.
@@ -74,7 +77,7 @@ function search_api_page_view($id, $keys = NULL, $overridden_options = array()) 
 
     // If spellcheck results were returned then add them to the render array.
     if (isset($results['search_api_spellcheck'])) {
-      $ret['results']['#spellcheck'] = array(
+      $ret['#results']['#spellcheck'] = array(
         '#theme' => 'search_api_spellcheck',
         '#spellcheck' => $results['search_api_spellcheck'],
       // Let the theme function know where the key is stored by passing its arg
@@ -87,21 +90,21 @@ function search_api_page_view($id, $keys = NULL, $overridden_options = array()) 
       );
     }
 
-    $ret['results']['#theme'] = "search_api_page_results__{$page->machine_name}";
-    $ret['results']['#index'] = search_api_index_load($page->index_id);
-    $ret['results']['#results'] = $results;
-    $ret['results']['#view_mode'] = isset($page->options['view_mode']) ? $page->options['view_mode'] : 'search_api_page_result';
-    $ret['results']['#keys'] = $keys;
-    $ret['results']['#page'] = $page;
+    $ret['#results']['#theme'] = "search_api_page_results__{$page->machine_name}";
+    $ret['#results']['#index'] = search_api_index_load($page->index_id);
+    $ret['#results']['#results'] = $results;
+    $ret['#results']['#view_mode'] = isset($page->options['view_mode']) ? $page->options['view_mode'] : 'search_api_page_result';
+    $ret['#results']['#keys'] = $keys;
+    $ret['#results']['#page'] = $page;
     // Add a clean-up function to reset page options to their original values.
     if ($overridden_options) {
-      $ret['results']['#post_render'] = array('search_api_page_reset_original_options');
+      $ret['#results']['#post_render'] = array('search_api_page_reset_original_options');
     }
 
     // Load pager.
     if ($results['result count'] > $limit) {
       pager_default_initialize($results['result count'], $limit);
-      $ret['results']['#pager']['#theme'] = 'pager';
+      $ret['#results']['#pager']['#theme'] = 'pager';
     }
 
     if (!empty($results['ignored'])) {
@@ -115,6 +118,20 @@ function search_api_page_view($id, $keys = NULL, $overridden_options = array()) 
   }
 
   return $ret;
+}
+
+/**
+ * Processes variables for search-api-page-full-page.tpl.php
+ *
+ * The $variables array contains the following arguments:
+ * - $form
+ * - $results
+ *
+ * @see search-api-page-full-page.tpl.php
+ */
+function template_preprocess_search_api_page_full_page(&$variables) {
+  $page = search_api_page_load($variables['id']);
+  $variables['theme_hook_suggestions'][] = 'search-api-page-full-page__' . $page->machine_name;
 }
 
 /**

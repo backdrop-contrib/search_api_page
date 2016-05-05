@@ -1,5 +1,7 @@
 Search API Pages 1.x, dev (xxxx-xx-xx):
 ---------------------------------------
+- #1847686 by MiSc, Bès, jsst, drunken monkey, jossensei: Added a theme
+  template for the whole search page.
 - #2699913 by dsdeiz, drunken monkey: Fixed Page Manager integration.
 - #1664706 by Les Lim, drunken monkey: Added static caching to hook_forms()
   implementation.
