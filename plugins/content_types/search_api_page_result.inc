@@ -62,12 +62,12 @@ function search_api_page_result_content_type_edit_form($form, &$form_state) {
   $conf = $form_state['conf'];
 
   $pages = array();
-  foreach (search_api_page_load_multiple(FALSE, array('enabled' => TRUE)) as $page => $info) {
+  foreach (search_api_page_load_multiple(FALSE, array('enabled' => TRUE)) as $info) {
     $pages[$info->machine_name] = $info->name;
   }
 
   if (isset($conf['page'])) {
-    $info = search_api_page_load($page);
+    $info = search_api_page_load($conf['page']);
     $index = search_api_index_load($info->index_id);
   }
 
@@ -107,7 +107,8 @@ function search_api_page_result_content_type_edit_form($form, &$form_state) {
     'search_api_page_result' => t('Themed as search results'),
   );
   // For entities, we also add all entity view modes.
-  if ($entity_info = entity_get_info($index->item_type)) {
+  if (isset($index) && $index->getEntityType()) {
+    $entity_info = entity_get_info($index->getEntityType());
     foreach ($entity_info['view modes'] as $mode => $mode_info) {
       $view_modes[$mode] = $mode_info['label'];
     }
