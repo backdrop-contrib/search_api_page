@@ -1,5 +1,6 @@
 Search API Pages 1.x, dev (xxxx-xx-xx):
 ---------------------------------------
+- #2755599 by Bès: Fixed template suggestion for search pages.
 - #2728487 by gnucifer: Fixed rendering code to fix item load if items are
   already present.
 - #2711499 by drunken monkey, gnucifer: Fixed page manager integration for

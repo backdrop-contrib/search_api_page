@@ -49,6 +49,11 @@ function search_api_page_view($id, $keys = NULL, $overridden_options = array()) 
     $ret['#form'] = drupal_get_form('search_api_page_search_form', $page, $keys);
   }
 
+  $ret['#results']['#theme'] = "search_api_page_results__{$page->machine_name}";
+  $ret['#results']['#index'] = search_api_index_load($page->index_id);
+  $ret['#results']['#view_mode'] = isset($page->options['view_mode']) ? $page->options['view_mode'] : 'search_api_page_result';
+  $ret['#results']['#page'] = $page;
+
   // Do a search if we have keys, or our empty behavior and facets dictate.
   if ($keys || !empty($page->options['empty_behavior'])) {
     // Override per_page setting with GET parameter.
@@ -90,12 +95,8 @@ function search_api_page_view($id, $keys = NULL, $overridden_options = array()) 
       );
     }
 
-    $ret['#results']['#theme'] = "search_api_page_results__{$page->machine_name}";
-    $ret['#results']['#index'] = search_api_index_load($page->index_id);
     $ret['#results']['#results'] = $results;
-    $ret['#results']['#view_mode'] = isset($page->options['view_mode']) ? $page->options['view_mode'] : 'search_api_page_result';
     $ret['#results']['#keys'] = $keys;
-    $ret['#results']['#page'] = $page;
     // Add a clean-up function to reset page options to their original values.
     if ($overridden_options) {
       $ret['#results']['#post_render'] = array('search_api_page_reset_original_options');
@@ -130,8 +131,8 @@ function search_api_page_view($id, $keys = NULL, $overridden_options = array()) 
  * @see search-api-page-full-page.tpl.php
  */
 function template_preprocess_search_api_page_full_page(&$variables) {
-  $page = search_api_page_load($variables['id']);
-  $variables['theme_hook_suggestions'][] = 'search-api-page-full-page__' . $page->machine_name;
+  $machine_name = $variables['results']['#page']->machine_name;
+  $variables['theme_hook_suggestions'][] = 'search-api-page-full-page__' . $machine_name;
 }
 
 /**
