@@ -1,5 +1,7 @@
 Search API Pages 1.x, dev (xxxx-xx-xx):
 ---------------------------------------
+- #2768763 by seworthi, drunken monkey: Fixed fatal error when page handler is
+  called with illegal argument.
 
 Search API Pages 1.3 (2016-07-05):
 ----------------------------------
