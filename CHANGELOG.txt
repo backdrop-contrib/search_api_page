@@ -1,5 +1,7 @@
 Search API Pages 1.x, dev (xxxx-xx-xx):
 ---------------------------------------
+- #2827641 by drunken monkey: Fixed display of "No results" message when first
+  viewing page.
 - #2826530 by tannguyenhn, drunken monkey: Fixed problem with CTools search
   result plugin.
 - #2768763 by seworthi, drunken monkey: Fixed fatal error when page handler is
