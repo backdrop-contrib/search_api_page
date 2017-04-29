@@ -230,13 +230,13 @@ function search_api_page_query_has_facets(SearchApiQueryInterface $query) {
  *   The ISO 639 language code of the language represented by $lang.
  */
 function _search_api_page_map_languages($lang) {
-    if ($lang == 'current') {
-      return $GLOBALS['language_content']->language;
-    }
-    elseif ($lang == 'default') {
-      return language_default('language');
-    }
-    return $lang;
+  if ($lang == 'current') {
+    return $GLOBALS['language_content']->language;
+  }
+  elseif ($lang == 'default') {
+    return language_default('language');
+  }
+  return $lang;
 }
 
 /**
