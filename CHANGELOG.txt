@@ -1,5 +1,7 @@
 Search API Pages 1.x, dev (xxxx-xx-xx):
 ---------------------------------------
+- #2981286 by osopolar, drunken monkey: Fixed search keys disappearing from
+  search box when using Panels.
 - #2912002 by drunken monkey, Rob C: Added per-page variations for the "full
   page" template.
 - #2900795 by drunken monkey: Fixed duplicated H1 page titles.
