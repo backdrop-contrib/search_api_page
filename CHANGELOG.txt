@@ -1,5 +1,6 @@
 Search API Pages 1.x, dev (xxxx-xx-xx):
 ---------------------------------------
+- #2995320 by drunken monkey: Added a length limit for keywords.
 - #2981286 by osopolar, drunken monkey: Fixed search keys disappearing from
   search box when using Panels.
 - #2912002 by drunken monkey, Rob C: Added per-page variations for the "full

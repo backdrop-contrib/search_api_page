@@ -29,6 +29,13 @@ function search_api_page_view($id, $keys = NULL, $overridden_options = array()) 
 
   // Pre-process keys (unescape \ and /).
   if (isset($keys) && $keys !== '') {
+    $max_length = 128;
+    if (isset($page->options['max_length'])) {
+      $max_length = $page->options['max_length'] > 0 ? $page->options['max_length'] : NULL;
+    }
+    if ($max_length && drupal_strlen($keys) > $max_length) {
+      $keys = drupal_substr($keys, 0, $max_length);
+    }
     $keys = explode("\\\\", $keys);
     $keys = str_replace("\\", "/", $keys);
     $keys = implode("\\", $keys);
