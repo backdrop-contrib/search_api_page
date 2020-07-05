@@ -46,6 +46,8 @@ function search_api_page_search_api_page_page_manager_tasks() {
  */
 function search_api_page_search_api_page_menu_alter(&$items, $task) {
   // Go through each search page.
+
+// @TODO might be compatable with config_set() but needs to be encapsulated in a function
   foreach (search_api_page_load_multiple(FALSE) as $page => $info) {
     if (variable_get('search_api_page_search_api_page_disabled_' . $info->machine_name, TRUE)) {
       continue;
@@ -58,8 +60,9 @@ function search_api_page_search_api_page_menu_alter(&$items, $task) {
       continue;
     }
     $callback = $items[$path]['page callback'];
-
+// @TODO the second part of this conditional can never truly be evaled because in D7 set and get did the same thing, and this is the only instance of this var
     if ($callback == 'search_api_page_view' || variable_get('page_manager_override_anyway', FALSE)) {
+#    if ($callback == 'search_api_page_view') {
       $items["$path"]['page callback'] = 'search_api_page_search_api_page_page';
       $items["$path"]['file path'] = $task['path'];
       $items["$path"]['file'] = $task['file'];
@@ -68,7 +71,7 @@ function search_api_page_search_api_page_menu_alter(&$items, $task) {
       // Automatically disable this task if it cannot be enabled.
       variable_set('search_api_page_search_api_page_disabled_' . $page, TRUE);
       if (!empty($GLOBALS['search_api_page_enabling_search_api_page'])) {
-        drupal_set_message(t('Page manager module is unable to enable @path because some other module already has overridden with %callback.', array('%callback' => $callback, '@path' => $path)), 'error');
+        backdrop_set_message(t('Page manager module is unable to enable @path because some other module already has overridden with %callback.', array('%callback' => $callback, '@path' => $path)), 'error');
       }
     }
   }

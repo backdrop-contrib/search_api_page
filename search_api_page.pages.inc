@@ -33,8 +33,8 @@ function search_api_page_view($id, $keys = NULL, $overridden_options = array()) 
     if (isset($page->options['max_length'])) {
       $max_length = $page->options['max_length'] > 0 ? $page->options['max_length'] : NULL;
     }
-    if ($max_length && drupal_strlen($keys) > $max_length) {
-      $keys = drupal_substr($keys, 0, $max_length);
+    if ($max_length && backdrop_strlen($keys) > $max_length) {
+      $keys = backdrop_substr($keys, 0, $max_length);
     }
     $keys = explode("\\\\", $keys);
     $keys = str_replace("\\", "/", $keys);
@@ -53,7 +53,7 @@ function search_api_page_view($id, $keys = NULL, $overridden_options = array()) 
   );
 
   if (!isset($page->options['result_page_search_form']) || $page->options['result_page_search_form']) {
-    $ret['#form'] = drupal_get_form('search_api_page_search_form', $page, $keys);
+    $ret['#form'] = backdrop_get_form('search_api_page_search_form', $page, $keys);
   }
 
   // Do a search if we have keys, or our empty behavior and facets dictate.
@@ -70,8 +70,8 @@ function search_api_page_view($id, $keys = NULL, $overridden_options = array()) 
       $results = search_api_page_search_execute($page, $keys, $limit);
     }
     catch (SearchApiException $e) {
-      drupal_set_message(t('An error occurred while executing the search. Please try again, or contact the site administrator if the problem persists.'), 'error');
-      $link = l(t('search page'), $_GET['q'], array('query' => drupal_get_query_parameters()));
+      backdrop_set_message(t('An error occurred while executing the search. Please try again, or contact the site administrator if the problem persists.'), 'error');
+      $link = l(t('search page'), $_GET['q'], array('query' => backdrop_get_query_parameters()));
       watchdog_exception('search_api_page', $e,
           '%type while executing a search: !message in %function (line %line of %file).',
           array(), WATCHDOG_ERROR, $link);
@@ -116,11 +116,11 @@ function search_api_page_view($id, $keys = NULL, $overridden_options = array()) 
     }
 
     if (!empty($results['ignored'])) {
-      drupal_set_message(t('The following search keys are too short or too common and were therefore ignored: "@list".', array('@list' => implode(t('", "'), $results['ignored']))), 'warning');
+      backdrop_set_message(t('The following search keys are too short or too common and were therefore ignored: "@list".', array('@list' => implode(t('", "'), $results['ignored']))), 'warning');
     }
     if (!empty($results['warnings'])) {
       foreach ($results['warnings'] as $warning) {
-        drupal_set_message(check_plain($warning), 'warning');
+        backdrop_set_message(check_plain($warning), 'warning');
       }
     }
   }
@@ -335,8 +335,8 @@ function template_preprocess_search_api_page_results(array &$variables) {
   // Prepare CSS classes.
   $classes_array = array(
     'search-api-page',
-    'search-api-page-' . drupal_clean_css_identifier($page->machine_name),
-    'view-mode-' . drupal_clean_css_identifier($variables['view_mode']),
+    'search-api-page-' . backdrop_clean_css_identifier($page->machine_name),
+    'view-mode-' . backdrop_clean_css_identifier($variables['view_mode']),
   );
   $variables['classes'] = implode(' ', $classes_array);
 
@@ -362,8 +362,8 @@ function template_preprocess_search_api_page_results(array &$variables) {
     }
   }
   // Load CSS.
-  $base_path = drupal_get_path('module', 'search_api_page') . '/';
-  drupal_add_css($base_path . 'search_api_page.css');
+  $base_path = backdrop_get_path('module', 'search_api_page') . '/';
+  backdrop_add_css($base_path . 'search_api_page.css');
 }
 
 /**
@@ -390,7 +390,7 @@ function template_preprocess_search_api_page_result(&$variables) {
   }
   else {
     $fields = $index->options['fields'];
-    $fields = array_intersect_key($fields, drupal_map_assoc($index->getFulltextFields()));
+    $fields = array_intersect_key($fields, backdrop_map_assoc($index->getFulltextFields()));
     $fields = search_api_extract_fields($wrapper, $fields);
     $text = '';
     $length = 0;
@@ -398,7 +398,7 @@ function template_preprocess_search_api_page_result(&$variables) {
       if (search_api_is_list_type($field['type']) || !isset($field['value'])) {
         continue;
       }
-      $val_length = drupal_strlen($field['value']);
+      $val_length = backdrop_strlen($field['value']);
       if ($val_length > $length) {
         $text = $field['value'];
         $length = $val_length;

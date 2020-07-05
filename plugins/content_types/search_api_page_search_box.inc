@@ -32,7 +32,7 @@ function search_api_page_search_box_content_type_render($subtype, $conf, $panel_
     $block->module  = 'search_api_page';
     $block->delta   = 'result';
     $block->subject = t($page->name);
-    $block->content = drupal_get_form('search_api_page_search_form_' . $page->machine_name, $page, $keys, TRUE);
+    $block->content = backdrop_get_form('search_api_page_search_form_' . $page->machine_name, $page, $keys, TRUE);
     $block->content['#contextual_links']['search_api_page'] = array(
       'admin/config/search/search_api/page',
       array($page->machine_name),

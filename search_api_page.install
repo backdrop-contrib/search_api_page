@@ -142,13 +142,13 @@ function search_api_page_update_7102() {
 
     $names = array();
     foreach (db_query('SELECT id, name FROM {search_api_page}')->fetchAllKeyed() as $id => $name) {
-      $base = $name = drupal_strtolower(preg_replace('/[^a-z0-9]+/i', '_', $name));
+      $base = $name = backdrop_strtolower(preg_replace('/[^a-z0-9]+/i', '_', $name));
       $i = 0;
       while (isset($names[$name])) {
         $name = $base . '_' . ++$i;
-        if (drupal_strlen($name) > 50) {
-          $suffix_len = drupal_strlen('_' . $i);
-          $base = drupal_substr($base, 0, 50 - $suffix_len);
+        if (backdrop_strlen($name) > 50) {
+          $suffix_len = backdrop_strlen('_' . $i);
+          $base = backdrop_substr($base, 0, 50 - $suffix_len);
           $name = $base . '_' . $i;
         }
       }
@@ -192,7 +192,7 @@ function search_api_page_update_7102() {
     catch (Exception $e1) {
       // Ignore.
     }
-    throw new DrupalUpdateException(t('An exception occurred during the update: @msg.', array('@msg' => $e->getMessage())));
+    throw new BackdropUpdateException(t('An exception occurred during the update: @msg.', array('@msg' => $e->getMessage())));
   }
 }
 
@@ -235,6 +235,6 @@ function search_api_page_update_7103() {
   }
   catch (Exception $e) {
     $tx->rollback();
-    throw new DrupalUpdateException(t('An exception occurred during the update: @msg.', array('@msg' => $e->getMessage())));
+    throw new BackdropUpdateException(t('An exception occurred during the update: @msg.', array('@msg' => $e->getMessage())));
   }
 }

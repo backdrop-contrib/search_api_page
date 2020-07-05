@@ -8,8 +8,8 @@
  * Displays an overview of all defined search pages.
  */
 function search_api_page_admin_overview() {
-  $base_path = drupal_get_path('module', 'search_api') . '/';
-  drupal_add_css($base_path . 'search_api.admin.css');
+  $base_path = backdrop_get_path('module', 'search_api') . '/';
+  backdrop_add_css($base_path . 'search_api.admin.css');
 
   $header = array(t('Status'), t('Configuration'), t('Name'), t('Path'), t('Index'), t('Operations'));
 
@@ -60,7 +60,7 @@ function search_api_page_admin_add(array $form, array &$form_state) {
   if (empty($form_state['step_one'])) {
     $indexes = search_api_index_load_multiple(FALSE);
     if (!$indexes) {
-      drupal_set_message(t('There are no searches indexes which can be searched. Please <a href="@url">create an index</a> first.', array('@url' => url('admin/config/search/search_api/add_index'))), 'warning');
+      backdrop_set_message(t('There are no searches indexes which can be searched. Please <a href="@url">create an index</a> first.', array('@url' => url('admin/config/search/search_api/add_index'))), 'warning');
       return array();
     }
     $index_options = array();
@@ -188,7 +188,7 @@ function search_api_page_admin_add(array $form, array &$form_state) {
     '#type' => 'select',
     '#title' => t('Results per page'),
     '#description' => t('Select how many items will be displayed on one page of the search result.'),
-    '#options' => drupal_map_assoc(array(5, 10, 20, 30, 40, 50, 60, 80, 100)),
+    '#options' => backdrop_map_assoc(array(5, 10, 20, 30, 40, 50, 60, 80, 100)),
     '#default_value' => 10,
   );
 
@@ -237,7 +237,7 @@ function search_api_page_admin_add(array $form, array &$form_state) {
     'current' => t("Current user's language"),
     'default' => t('Default site language'),
   );
-  $languages += entity_metadata_language_list();
+  $languages += entity_plus_metadata_language_list();
   if (count($languages) > 4) {
     $form['language_filter'] = array(
       '#type' => 'select',
@@ -272,7 +272,7 @@ function search_api_page_admin_add(array $form, array &$form_state) {
  */
 function search_api_page_admin_add_validate(array $form, array &$form_state) {
   if (empty($form_state['step_one'])) {
-    $form_state['values']['path'] = drupal_strtolower(trim($form_state['values']['path']));
+    $form_state['values']['path'] = backdrop_strtolower(trim($form_state['values']['path']));
     if (search_api_page_load_multiple(FALSE, array('path' => $form_state['values']['path']))) {
       form_set_error('path', t('The entered path is already in use. Please enter a unique path.'));
     }
@@ -292,7 +292,7 @@ function search_api_page_admin_add_submit(array $form, array &$form_state) {
   $values = $form_state['step_one'];
   $values['options'] = $form_state['values'];
   search_api_page_insert($values);
-  drupal_set_message(t('The search page was successfully created.'));
+  backdrop_set_message(t('The search page was successfully created.'));
   $form_state['redirect'] = 'admin/config/search/search_api/page';
 }
 
@@ -406,7 +406,7 @@ function search_api_page_admin_edit(array $form, array &$form_state, Entity $pag
     '#type' => 'select',
     '#title' => t('Results per page'),
     '#description' => t('Select how many items will be displayed on one page of the search result.'),
-    '#options' => drupal_map_assoc(array(5, 10, 20, 30, 40, 50, 60, 80, 100)),
+    '#options' => backdrop_map_assoc(array(5, 10, 20, 30, 40, 50, 60, 80, 100)),
     '#default_value' => $page->options['per_page'],
   );
 
@@ -455,7 +455,7 @@ function search_api_page_admin_edit(array $form, array &$form_state, Entity $pag
     'current' => t("Current user's language"),
     'default' => t('Default site language'),
   );
-  $languages += entity_metadata_language_list();
+  $languages += entity_plus_metadata_language_list();
   if (count($languages) > 4) {
     $form['options']['language_filter'] = array(
       '#type' => 'select',
@@ -529,7 +529,7 @@ function search_api_page_admin_edit(array $form, array &$form_state, Entity $pag
  */
 function search_api_page_admin_edit_validate(array $form, array &$form_state) {
   if (!empty($form_state['values']['op']) && $form_state['values']['op'] == t('Save changes')) {
-    $form_state['values']['path'] = drupal_strtolower(trim($form_state['values']['path']));
+    $form_state['values']['path'] = backdrop_strtolower(trim($form_state['values']['path']));
     $pages = search_api_page_load_multiple(FALSE, array('path' => $form_state['values']['path']));
     if (count($pages) > 1 || (($page = array_shift($pages)) && $page->machine_name != $form_state['page']->machine_name)) {
       form_set_error('path', t('The entered path is already in use. Please enter a unique path.'));
@@ -549,14 +549,14 @@ function search_api_page_admin_edit_submit(array $form, array &$form_state) {
     $form_state['page']->delete();
 
     if ($op == t('Revert search page')) {
-      drupal_set_message(t('The search page was successfully reverted.'));
+      backdrop_set_message(t('The search page was successfully reverted.'));
     }
     else {
-      drupal_set_message(t('The search page was successfully deleted.'));
+      backdrop_set_message(t('The search page was successfully deleted.'));
     }
 
     return;
   }
   search_api_page_edit($form_state['page']->machine_name, $form_state['values']);
-  drupal_set_message(t('The changes were successfully saved.'));
+  backdrop_set_message(t('The changes were successfully saved.'));
 }

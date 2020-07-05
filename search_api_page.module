@@ -4,6 +4,20 @@
  * Generate search pages using Search API indexes.
  */
 
+
+
+
+ /**
+  * Implements hook_config_info().
+  */
+ function search_api_pages_config_info() {
+   $prefixes['search_api_pages.settings'] = array(
+     'label' => t('Search API Pages settings'),
+     'group' => t('Search API Pages'),
+   );
+   return $prefixes;
+ }
+
 /**
  * Implements hook_menu().
  */
@@ -20,7 +34,7 @@ function search_api_page_menu() {
   $items[$pre . '/add'] = array(
     'title' => 'Add search page',
     'description' => 'Add a new search page.',
-    'page callback' => 'drupal_get_form',
+    'page callback' => 'backdrop_get_form',
     'page arguments' => array('search_api_page_admin_add'),
     'access arguments' => array('administer search_api'),
     'file' => 'search_api_page.admin.inc',
@@ -29,7 +43,7 @@ function search_api_page_menu() {
   $items[$pre . '/%search_api_page'] = array(
     'title' => 'Edit search page',
     'description' => 'Configure or delete a search page.',
-    'page callback' => 'drupal_get_form',
+    'page callback' => 'backdrop_get_form',
     'page arguments' => array('search_api_page_admin_edit', 5),
     'access arguments' => array('administer search_api'),
     'file' => 'search_api_page.admin.inc',
@@ -148,7 +162,7 @@ function search_api_page_block_info() {
   foreach (search_api_page_load_multiple(FALSE, array('enabled' => TRUE)) as $page) {
     $blocks[$page->machine_name] = array(
       'info' => t('Search block: !name', array('!name' => $page->name)),
-      'cache' => DRUPAL_CACHE_PER_ROLE | DRUPAL_CACHE_PER_PAGE,
+      'cache' => BACKDROP_CACHE_PER_ROLE | BACKDROP_CACHE_PER_PAGE,
     );
   }
   return $blocks;
@@ -162,7 +176,7 @@ function search_api_page_block_view($delta) {
   if ($page && $page->enabled && search_api_page_access($delta)) {
     $block = array();
     $block['subject'] = t($page->name);
-    $block['content'] = drupal_get_form('search_api_page_search_form_' . $page->machine_name, $page, NULL, TRUE);
+    $block['content'] = backdrop_get_form('search_api_page_search_form_' . $page->machine_name, $page, NULL, TRUE);
     $block['content']['#contextual_links']['search_api_page'] = array(
       'admin/config/search/search_api/page',
       array($page->machine_name),
@@ -211,7 +225,7 @@ function search_api_page_forms($form_id, $args) {
 function search_api_page_entity_info() {
   $info['search_api_page'] = array(
     'label' => t('Search page'),
-    'controller class' => 'EntityAPIControllerExportable',
+    'controller class' => 'EntityPlusControllerExportable',
     'metadata controller class' => FALSE,
     'entity class' => 'Entity',
     'base table' => 'search_api_page',
@@ -396,7 +410,7 @@ function search_api_page_load($id, $reset = FALSE) {
  */
 function search_api_page_load_multiple($ids = FALSE, array $conditions = array(), $reset = FALSE) {
   $pages = entity_load('search_api_page', $ids, $conditions, $reset);
-  return entity_key_array_by_property($pages, 'machine_name');
+  return entity_plus_key_array_by_property($pages, 'machine_name');
 }
 
 /**
@@ -512,7 +526,7 @@ function search_api_page_search_form(array $form, array &$form_state, Entity $pa
     $max_length = $page->options['max_length'] > 0 ? $page->options['max_length'] : NULL;
   }
   if ($max_length) {
-    $keys = drupal_substr($keys, 0, $max_length);
+    $keys = backdrop_substr($keys, 0, $max_length);
   }
   $form['keys_' . $page->id] = array(
     '#type' => 'textfield',

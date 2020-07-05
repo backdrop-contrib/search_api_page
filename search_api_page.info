@@ -1,7 +1,10 @@
+type = module
 name = Search pages
 description = "Create search pages using Search API indexes."
-dependencies[] = search_api
-core = 7.x
+dependencies[] = entity:entity
+dependencies[] = entity_plus
 package = Search
-
+version = 1.x-1.x
+backdrop = 1.x
 configure = admin/config/search/search_api/page
+dependencies[] = search_api

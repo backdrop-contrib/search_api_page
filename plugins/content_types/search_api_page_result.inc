@@ -83,7 +83,7 @@ function search_api_page_result_content_type_edit_form($form, &$form_state) {
     '#type' => 'select',
     '#title' => t('Results per page'),
     '#description' => t('Select how many items will be displayed on one page of the search result.'),
-    '#options' => drupal_map_assoc(array(5, 10, 20, 30, 40, 50, 60, 80, 100)),
+    '#options' => backdrop_map_assoc(array(5, 10, 20, 30, 40, 50, 60, 80, 100)),
     '#default_value' => $conf['per_page'],
     '#required' => TRUE,
   );
