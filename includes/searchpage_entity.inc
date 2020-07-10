@@ -12,7 +12,6 @@ class SearchApiPage extends Entity {
 
 	/**
      * The primary identifier for a search page.
-     * Immutable.
      *
      * @var integer
      */
@@ -20,11 +19,19 @@ class SearchApiPage extends Entity {
 
 	/**
      * The machine name of the index this search page uses.
-     * Immutable
      *
      * @var string
      */
     public $index_id;
+
+    /**
+     * The index this search page uses.
+     *
+     * @var object
+     *
+     * @return SearchApiIndex
+     */
+    public $index;
 
 	/**
      * The path at which this search page can be viewed.
@@ -68,6 +75,11 @@ class SearchApiPage extends Entity {
      */
     public $enabled = 1;
 
+
+
+    public $statusKey = '';
+
+
     /**
      * Constructor as a helper to the parent constructor.
      */
@@ -88,7 +100,7 @@ class SearchApiPage extends Entity {
      *
      * @see entity_has_status()
      */
-    public function hasStatus($status) {
+    public function hasStatus() {
       if (!empty($this->entityInfo['exportable'])) {
         return isset($this->{$this->statusKey}) && ($this->{$this->statusKey} & $status) == $status;
       }
@@ -102,6 +114,13 @@ class SearchApiPage extends Entity {
     }
 
     /**
+    *  The machine name of the index this search page uses
+    */
+    public function indexID() {
+        return $this->index_id;
+    }
+
+    /**
      * Implements EntityInterface::entityType().
      */
     public function entityType() {
@@ -109,31 +128,32 @@ class SearchApiPage extends Entity {
     }
 
     /**
+     * Implements EntityInterface::bundle().
+     */
+    public function bundle() {}
+
+    /**
      * Implements EntityInterface::label().
      */
-    public function label() {}
+    public function label() {
+        return $this->name;
+    }
 
     /**
      * Overrides Entity\Entity::uri().
      */
     public function uri() {
-      return array();
+        return array(
+          'path' => $this->path,
+        );
     }
 
+    /**
+    * @return SearchApiIndex|false
+    *   A completely loaded index object, or FALSE if no such index exists.
+    */
+    function getIndex() {
+      return search_api_index_load($this->index_id);
+    }
 
-
-
-
-
-  }
-
-  #[id] => serial
-  #[index_id] => varchar
-  #[path] => varchar
-  #[name] => varchar
-  #[machine_name] => varchar
-  #[description] => text
-  #[options] => text
-  #[enabled] => int
-  #[status] => int
-  #[module] => varchar
+}

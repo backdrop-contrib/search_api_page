@@ -494,33 +494,17 @@ function search_api_page_admin_edit(array $form, array &$form_state, Entity $pag
     '#value' => t('Save changes'),
   );
 
-  if ($page->hasStatus(ENTITY_OVERRIDDEN)) {
-    $form['actions']['revert'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Revert search page'),
-      '#description' => t('This will revert all settings on this search page back to the defaults. This action cannot be undone.'),
-      '#collapsible' => TRUE,
-      '#collapsed' => TRUE,
-      'revert' => array(
-        '#type' => 'submit',
-        '#value' => t('Revert search page'),
-      ),
-    );
-  }
-  elseif ($page->hasStatus(ENTITY_CUSTOM)) {
-    $form['actions']['delete'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Delete search page'),
-      '#description' => t('This will delete the search page along with all of its settings.'),
-      '#collapsible' => TRUE,
-      '#collapsed' => TRUE,
-      'delete' => array(
-        '#type' => 'submit',
-        '#value' => t('Delete search page'),
-      ),
-    );
-  }
-
+  $form['actions']['delete'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Delete search page'),
+    '#description' => t('This will delete the search page along with all of its settings.'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    'delete' => array(
+      '#type' => 'submit',
+      '#value' => t('Delete search page'),
+    ),
+  );
   return $form;
 }
 

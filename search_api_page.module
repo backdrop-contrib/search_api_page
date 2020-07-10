@@ -261,7 +261,6 @@ function search_api_page_entity_property_info() {
       'label' => t('Index'),
       'type' => 'search_api_index',
       'description' => t('The index this search page uses.'),
-      'getter callback' => 'search_api_page_get_index',
     ),
     'name' => array(
       'label' => t('Name'),
@@ -364,13 +363,6 @@ function search_api_page_search_api_page_delete(Entity $page) {
  */
 function search_api_page_url(Entity $page) {
   return array('path' => $page->path);
-}
-
-/**
- * Entity property getter callback.
- */
-function search_api_page_get_index(Entity $page) {
-  return search_api_index_load($page->index_id);
 }
 
 /**
