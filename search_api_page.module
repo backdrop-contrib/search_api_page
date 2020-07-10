@@ -4,16 +4,13 @@
  * Generate search pages using Search API indexes.
  */
 
-
-
-
  /**
   * Implements hook_config_info().
   */
- function search_api_pages_config_info() {
+ function search_api_page_config_info() {
    $prefixes['search_api_pages.settings'] = array(
      'label' => t('Search API Pages settings'),
-     'group' => t('Search API Pages'),
+     'group' => t('Configuration'),
    );
    return $prefixes;
  }
@@ -227,7 +224,7 @@ function search_api_page_entity_info() {
     'label' => t('Search page'),
     'controller class' => 'EntityPlusControllerExportable',
     'metadata controller class' => FALSE,
-    'entity class' => 'Entity',
+    'entity class' => 'SearchApiPage',
     'base table' => 'search_api_page',
     'uri callback' => 'search_api_page_url',
     'module' => 'search_api_page',
@@ -252,7 +249,7 @@ function search_api_page_entity_property_info() {
       'type' => 'integer',
       'description' => t('The primary identifier for a search page.'),
       'schema field' => 'id',
-      'validation callback' => 'entity_metadata_validate_integer_positive',
+      'validation callback' => 'entity_plus_metadata_validate_integer_positive',
     ),
     'index_id' => array(
       'label' => t('Index ID'),
@@ -604,4 +601,13 @@ function search_api_page_search_form_submit(array $form, array &$form_state) {
   // 'destination' GET parameter, which would override our destination, if
   // present.
   unset($_GET['destination']);
+}
+
+/**
+ * Implements hook_autoload_info().
+ */
+function search_api_page_autoload_info() {
+  return array(
+      'SearchApiPage' => 'includes/searchpage_entity.inc',
+  );
 }

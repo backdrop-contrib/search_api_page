@@ -180,7 +180,7 @@ function search_api_page_admin_add(array $form, array &$form_state) {
     '#type' => 'textfield',
     '#title' => t('Maximum keywords length'),
     '#description' => t('The maximum number of characters that should be allowed as search keywords. Set to an empty string to not have any limit.'),
-    '#element_validate' => array('element_validate_integer_positive'),
+    '#element_validate' => array('entity_plus_metadata_validate_integer_positive'),
     '#default_value' => 128,
   );
 
@@ -398,7 +398,7 @@ function search_api_page_admin_edit(array $form, array &$form_state, Entity $pag
     '#type' => 'textfield',
     '#title' => t('Maximum keywords length'),
     '#description' => t('The maximum number of characters that should be allowed as search keywords. Set to an empty string to not have any limit.'),
-    '#element_validate' => array('element_validate_integer_positive'),
+    '#element_validate' => array('entity_plus_metadata_validate_integer_positive'),
     '#default_value' => $max_length,
   );
 
