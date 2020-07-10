@@ -196,7 +196,7 @@ function search_api_page_forms($form_id, $args) {
   }
 
   // Make sure we do have a page as the first argument.
-  if (!$args || !($args[0] instanceof Entity)) {
+  if (!$args || !($args[0] instanceof SearchApiPage)) {
     return array();
   }
 
@@ -261,6 +261,7 @@ function search_api_page_entity_property_info() {
       'label' => t('Index'),
       'type' => 'search_api_index',
       'description' => t('The index this search page uses.'),
+      'getter callback' => 'search_api_page_get_index',
     ),
     'name' => array(
       'label' => t('Name'),
@@ -334,7 +335,7 @@ function search_api_page_search_api_index_delete(SearchApiIndex $index) {
  *
  * Rebuilds the menu table if a search page is created.
  */
-function search_api_page_search_api_page_insert(Entity $page) {
+function search_api_page_search_api_page_insert(SearchApiPage $page) {
   menu_rebuild();
 }
 
@@ -343,7 +344,7 @@ function search_api_page_search_api_page_insert(Entity $page) {
  *
  * Rebuilds the menu table if a search page is edited.
  */
-function search_api_page_search_api_page_update(Entity $page) {
+function search_api_page_search_api_page_update(SearchApiPage $page) {
   if ($page->enabled != $page->original->enabled || $page->name != $page->original->name || $page->path != $page->original->path) {
     menu_rebuild();
   }
@@ -354,15 +355,22 @@ function search_api_page_search_api_page_update(Entity $page) {
  *
  * Rebuilds the menu table if a search page is removed.
  */
-function search_api_page_search_api_page_delete(Entity $page) {
+function search_api_page_search_api_page_delete(SearchApiPage $page) {
   menu_rebuild();
 }
 
 /**
- * Entity URI callback.
+ * SearchApiPage URI callback.
  */
-function search_api_page_url(Entity $page) {
-  return array('path' => $page->path);
+function search_api_page_url(SearchApiPage $page) {
+  return $page->uri();
+}
+
+/**
+ * SearchApiPage property getter callback.
+ */
+function search_api_page_get_index(SearchApiPage $page) {
+  return $page->getIndex();
 }
 
 /**
@@ -373,7 +381,7 @@ function search_api_page_url(Entity $page) {
  * @param bool $reset
  *   Whether to reset the internal cache.
  *
- * @return Entity
+ * @return SearchApiPage
  *   A completely loaded page object, or FALSE if no such page exists.
  */
 function search_api_page_load($id, $reset = FALSE) {
@@ -496,7 +504,7 @@ function search_api_page_delete($id) {
 /**
  * Displays a search form.
  *
- * @param Entity $page
+ * @param SearchApiPage $page
  *   The search page for which this form is displayed.
  * @param string|null $keys
  *   (optional) The search keys.
@@ -509,7 +517,7 @@ function search_api_page_delete($id) {
  *
  * @ingroup forms
  */
-function search_api_page_search_form(array $form, array &$form_state, Entity $page, $keys = NULL, $compact = FALSE) {
+function search_api_page_search_form(array $form, array &$form_state, SearchApiPage $page, $keys = NULL, $compact = FALSE) {
   $max_length = 128;
   if (isset($page->options['max_length'])) {
     $max_length = $page->options['max_length'] > 0 ? $page->options['max_length'] : NULL;

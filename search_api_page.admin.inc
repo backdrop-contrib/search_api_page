@@ -299,7 +299,7 @@ function search_api_page_admin_add_submit(array $form, array &$form_state) {
 /**
  * Displays a form for editing or deleting a search page.
  */
-function search_api_page_admin_edit(array $form, array &$form_state, Entity $page) {
+function search_api_page_admin_edit(array $form, array &$form_state, SearchApiPage $page) {
   $index = search_api_index_load($page->index_id);
   $form_state['page'] = $page;
 

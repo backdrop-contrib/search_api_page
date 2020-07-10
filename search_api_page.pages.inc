@@ -131,7 +131,7 @@ function search_api_page_view($id, $keys = NULL, $overridden_options = array()) 
 /**
  * Executes a search.
  *
- * @param Entity $page
+ * @param SearchApiPage $page
  *   The page for which a search should be executed.
  * @param string|null $keys
  *   The keywords to search for, or NULL for a search without keywords.
@@ -146,7 +146,7 @@ function search_api_page_view($id, $keys = NULL, $overridden_options = array()) 
  * @throws SearchApiException
  *   If an error occurred during the search.
  */
-function search_api_page_search_execute(Entity $page, $keys = NULL, $limit = 10) {
+function search_api_page_search_execute(SearchApiPage $page, $keys = NULL, $limit = 10) {
   $offset = pager_find_page() * $limit;
   $options = array(
     'search id' => 'search_api_page:' . $page->path,
