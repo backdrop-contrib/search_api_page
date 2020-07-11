@@ -66,7 +66,6 @@ function search_api_page_menu() {
       );
     }
   }
-
   return $items;
 }
 
@@ -296,22 +295,14 @@ function search_api_page_entity_property_info() {
 }
 
 /**
- * Implements hook_ctools_plugin_directory().
- */
-function search_api_page_ctools_plugin_directory($owner, $plugin_type) {
-  if ($owner == 'page_manager' || $owner == 'ctools') {
-    return 'plugins/' . $plugin_type;
-  }
-  return NULL;
-}
-
-/**
  * Implements hook_search_api_index_update().
+ *
+ * disables a search page if the index it uses is not accessable
  */
 function search_api_page_search_api_index_update(SearchApiIndex $index) {
   if (!$index->enabled && $index->original->enabled) {
     foreach (search_api_page_load_multiple(FALSE, array('index_id' => $index->machine_name, 'enabled' => 1)) as $page) {
-      search_api_page_edit($page->id, array('enabled' => 0));
+      $page->edit(array('enabled' => 0));
     }
   }
 }
@@ -443,41 +434,9 @@ function search_api_page_insert(array $values) {
   if (isset($values['id'])) {
     $fields['id'] = $values['id'];
   }
-
   $page = entity_create('search_api_page', $fields);
   $page->save();
-
   return $page->id;
-}
-
-/**
- * Changes a page's settings.
- *
- * @param $id
- *   The edited page's ID.
- * @param array $fields
- *   The new field values to set.
- *
- * @return
- *   1 if fields were changed, 0 if the fields already had the desired values.
- */
-function search_api_page_edit($id, array $fields) {
-  $page = search_api_page_load($id, TRUE);
-  $changeable = array('name' => 1, 'description' => 1, 'path' => 1, 'options' => 1, 'enabled' => 1);
-  foreach ($fields as $field => $value) {
-    if (isset($changeable[$field]) || $value === $page->$field) {
-      $page->$field = $value;
-      $new_values = TRUE;
-    }
-  }
-  // If there are no new values, just return 0.
-  if (empty($new_values)) {
-    return 0;
-  }
-
-  $page->save();
-
-  return 1;
 }
 
 /**
@@ -495,9 +454,7 @@ function search_api_page_delete($id) {
     return FALSE;
   }
   $page->delete();
-
   menu_rebuild();
-
   return TRUE;
 }
 

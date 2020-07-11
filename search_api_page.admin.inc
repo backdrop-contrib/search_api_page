@@ -11,7 +11,7 @@ function search_api_page_admin_overview() {
   $base_path = backdrop_get_path('module', 'search_api') . '/';
   backdrop_add_css($base_path . 'search_api.admin.css');
 
-  $header = array(t('Status'), t('Configuration'), t('Name'), t('Path'), t('Index'), t('Operations'));
+  $header = array(t('Status'), t('Name'), t('Path'), t('Index'), t('Operations'));
 
   $rows = array();
   $t_enabled['data'] = array(
@@ -36,7 +36,6 @@ function search_api_page_admin_overview() {
     $index = search_api_index_load($page->index_id);
     $rows[] = array(
       $page->enabled ? $t_enabled : $t_disabled,
-      theme('entity_status', array('status' => $page->status)),
       l($page->name, $page->path),
       l($page->path, $page->path),
       l($index->name, $pre_index . $index->machine_name),
@@ -541,6 +540,6 @@ function search_api_page_admin_edit_submit(array $form, array &$form_state) {
 
     return;
   }
-  search_api_page_edit($form_state['page']->machine_name, $form_state['values']);
+  $form_state['page']->edit($form_state['values']);
   backdrop_set_message(t('The changes were successfully saved.'));
 }

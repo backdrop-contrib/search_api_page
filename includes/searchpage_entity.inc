@@ -75,35 +75,11 @@ class SearchApiPage extends Entity {
      */
     public $enabled = 1;
 
-
-
-    public $statusKey = '';
-
-
     /**
      * Constructor as a helper to the parent constructor.
      */
     public function __construct(array $values = array(), $entity_type = 'search_api_page') {
       parent::__construct($values, $entity_type);
-    }
-
-    /**
-     * Checks if the entity has a certain exportable status.
-     *
-     * @param $status
-     *   A status constant, i.e. one of ENTITY_CUSTOM, ENTITY_IN_CODE,
-     *   ENTITY_OVERRIDDEN or ENTITY_FIXED.
-     *
-     * @return bool
-     *   For exportable entities TRUE if the entity has the status, else FALSE.
-     *   In case the entity is not exportable, NULL is returned.
-     *
-     * @see entity_has_status()
-     */
-    public function hasStatus() {
-      if (!empty($this->entityInfo['exportable'])) {
-        return isset($this->{$this->statusKey}) && ($this->{$this->statusKey} & $status) == $status;
-      }
     }
 
     /**
@@ -150,10 +126,43 @@ class SearchApiPage extends Entity {
 
     /**
     * @return SearchApiIndex|false
-    *   A completely loaded index object, or FALSE if no such index exists.
+    * A completely loaded index object, or FALSE if no such index exists.
     */
-    function getIndex() {
+    public function getIndex() {
       return search_api_index_load($this->index_id);
+    }
+
+    /**
+     * Changes a page's settings.
+     *
+     * @param $id
+     *   The edited page's ID.
+     * @param array $fields
+     *   The new field values to set.
+     *
+     * @return
+     *   1 if fields were changed, 0 if the fields already had the desired values.
+     */
+    public function edit(array $fields) {
+      $changeable = array(
+          'name' => 1,
+          'description' => 1,
+          'path' => 1,
+          'options' => 1,
+          'enabled' => 1
+      );
+      foreach ($fields as $field => $value) {
+        if (isset($changeable[$field]) || $value === $this->$field) {
+          $this->$field = $value;
+          $new_values = TRUE;
+        }
+      }
+      // If there are no new values, just return 0.
+      if (empty($new_values)) {
+        return 0;
+      }
+      $this->save();
+      return 1;
     }
 
 }
