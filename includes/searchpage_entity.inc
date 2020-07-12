@@ -126,6 +126,7 @@ class SearchApiPage extends Entity {
 
     /**
     * @return SearchApiIndex|false
+    *
     * A completely loaded index object, or FALSE if no such index exists.
     */
     public function getIndex() {

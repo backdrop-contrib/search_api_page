@@ -8,16 +8,18 @@ Installation
 ------------
 
 As the only pre-requisite you will need the Search API [1] module enabled and
-correctly set up, along with at least one service class. Create a server and an
-index (or use the default one) and configure them according to your needs.
+correctly set up, as well as the Entity Plus [2] module enabled, along with at
+least one service class. Create a server and an index (or use the default one)
+and configure them according to your needs.
 
-[1] https://drupal.org/project/search_api
+[1] https://github.com/backdrop-contrib/search_api
+[2] https://github.com/backdrop-contrib/entity_plus
 
 Then go to admin/config/search/search_api/page on your site (Administration »
 Configuration » Search and metadata » Search API » Search pages) where you can
 add a search page for your index.
 
-Common problems
+Common problems found with the Drupal 7 version:
 ---------------
 
 - Pager not displayed
