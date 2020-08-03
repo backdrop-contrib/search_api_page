@@ -33,9 +33,10 @@
  *
  * @see template_preprocess_search_api_page_results()
  */
-
+#implode(' ', $classes_array);
 ?>
-<div class="<?php print $classes;?>">
+<?php # dpm($classes); ?>
+<div class="<?php print( implode(' ', $classes) );?>">
   <?php if ($result_count): ?>
     <?php print render($search_performance); ?>
   <?php endif; ?>

@@ -86,7 +86,8 @@ function search_api_page_theme() {
       'form' => array(),
       'results' => array(),
     ),
-    'template' => 'search-api-page-full-page',
+		'file' => 'search_api_page.theme.inc',
+    'template' => 'templates/search-api-page-full-page',
   );
   $themes['search_api_page_results'] = array(
     'variables' => array(
@@ -101,7 +102,7 @@ function search_api_page_theme() {
       'no_results_help'
     ),
     'file' => 'search_api_page.pages.inc',
-    'template' => 'search-api-page-results',
+    'template' => 'templates/search-api-page-results',
   );
   $themes['search_api_page_result'] = array(
     'variables' => array(
@@ -112,22 +113,12 @@ function search_api_page_theme() {
       'list_classes' => '',
     ),
     'file' => 'search_api_page.pages.inc',
-    'template' => 'search-api-page-result',
+    'template' => 'templates/search-api-page-result',
   );
   $themes['search_api_page_search_performance'] = array(
     'render element' => 'element',
   );
-
   return $themes;
-}
-
-/**
- * Implements theme for rendering search-performance
- */
-function theme_search_api_page_search_performance($variables) {
-  $element = array_shift($variables);
-
-  return $element['#markup'];
 }
 
 /**
@@ -234,7 +225,6 @@ function search_api_page_entity_info() {
       'name' => 'machine_name',
     ),
   );
-
   return $info;
 }
 
@@ -290,7 +280,6 @@ function search_api_page_entity_property_info() {
       'schema field' => 'enabled',
     ),
   );
-
   return $info;
 }
 
@@ -525,7 +514,6 @@ function search_api_page_search_form(array $form, array &$form_state, SearchApiP
   if (user_is_logged_in()) {
     $form['#token'] = FALSE;
   }
-
   return $form;
 }
 
@@ -565,6 +553,6 @@ function search_api_page_search_form_submit(array $form, array &$form_state) {
  */
 function search_api_page_autoload_info() {
   return array(
-      'SearchApiPage' => 'includes/searchpage_entity.inc',
+      'SearchApiPage' => 'search_api_page.entity.inc',
   );
 }
