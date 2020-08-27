@@ -8,7 +8,7 @@
   * Implements hook_config_info().
   */
  function search_api_page_config_info() {
-   $prefixes['search_api_pages.settings'] = array(
+   $prefixes['search_api_page.settings'] = array(
      'label' => t('Search API Pages settings'),
      'group' => t('Configuration'),
    );
