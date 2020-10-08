@@ -7,7 +7,6 @@ searching in your Search API indexes, similar to the core Search functionality.
 Installation
 ------------
 
-
 - Install this module using the official Backdrop CMS instructions at
   https://backdropcms.org/guide/modules.
 
@@ -45,7 +44,7 @@ Issues
   See [2] for details, and for help if the other pager doesn't come from Views.
 
   [2] https://drupal.org/node/1442686
-  
+
 - Bugs and Feature requests should be reported in the Issue Queue:
 https://github.com/backdrop-contrib/search_api_pages/issues.
 
@@ -63,9 +62,7 @@ Credits
 License
 -------
 
-This project is GPL v2 software. 
+This project is GPL v2 software.
 See the LICENSE.txt file in this directory for complete text.
 
 ---------------
-
-

@@ -103,7 +103,7 @@ function search_api_page_update_dependencies() {
  * Implements hook_uninstall().
  */
 function search_api_page_uninstall() {
-  config_del('search_api_page.settings', 'search_api_page_search_api_page_disabled_');
+  config_clear('search_api_page.settings', 'search_api_page_search_api_page_disabled_');
 }
 
 // TODO The old hook_update_N functions cannot be applied to Backdrop.
