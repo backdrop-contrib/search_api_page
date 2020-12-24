@@ -100,7 +100,7 @@ function template_preprocess_search_api_page_results(array &$variables) {
   if ($variables['view_mode'] != 'search_api_page_result') {
     // Check if we have any entities to show and, if yes, show them.
     if (!empty($variables['items'])) {
-      $variables['search_results'] = entity_view($variables['index']->getEntityType(), $variables['items'], $variables['view_mode']);
+      $variables['search_results'] = entity_plus_view($variables['index']->getEntityType(), $variables['items'], $variables['view_mode']);
     }
   }
   else {
